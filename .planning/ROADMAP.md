@@ -12,7 +12,7 @@ Towncrier is built in six phases that follow a strict dependency graph: scaffold
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Core Scaffolding + ABI Contract** - Build system, static library, and C ABI header proven on both platforms
+- [x] **Phase 1: Core Scaffolding + ABI Contract** - Build system, static library, and C ABI header proven on both platforms
 - [ ] **Phase 2: Zig Core — Poll Engine + GitHub** - Background polling, SQLite state, GitHub API client, and snapshot delivery
 - [ ] **Phase 3: Linux Tray App** - D-Bus tray, GTK4 notification list, libsecret, and xdg-open on Linux
 - [ ] **Phase 4: macOS Tray App** - NSStatusItem tray, XCFramework integration, Keychain, and browser launch on macOS
@@ -30,7 +30,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `zig build` on Linux produces `libtowncrier.a` without any macOS-specific symbol references
   3. A minimal C test binary links against `libtowncrier.a`, calls `towncrier_init` / `towncrier_tick` / `towncrier_free`, and exits cleanly under Valgrind / ASAN with no leaks
   4. `towncrier.h` documents string ownership rules (who allocates, who frees, null-termination guarantee) and callback context lifecycle
-**Plans**: TBD
+**Plans**: 2 plans (01-01-PLAN.md, 01-02-PLAN.md)
+Plans:
+- [x] 01-01-PLAN.md — Build system scaffold, ABI header, and Zig stub implementations
+- [x] 01-02-PLAN.md — ASAN validation, symbol verification, and human sign-off
 
 ### Phase 2: Zig Core — Poll Engine + GitHub
 **Goal**: The background poll engine runs per-account threads that fetch GitHub notifications, persist state in SQLite, and deliver snapshots to the shell via ABI callbacks
@@ -101,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Scaffolding + ABI Contract | 0/TBD | Not started | - |
+| 1. Core Scaffolding + ABI Contract | 2/2 | Complete | 2026-04-16 |
 | 2. Zig Core — Poll Engine + GitHub | 0/TBD | Not started | - |
 | 3. Linux Tray App | 0/TBD | Not started | - |
 | 4. macOS Tray App | 0/TBD | Not started | - |
