@@ -13,7 +13,8 @@ dependency_graph:
     - ASAN-validated C ABI integration test (zero memory errors)
     - Symbol table confirmed: 13 exported towncrier_ functions
     - Platform isolation confirmed: no GTK or macOS symbols in libtowncrier.a
-    - Phase 1 validation gate passed (pending human sign-off)
+    - Phase 1 validation gate passed — human signed off, nyquist_compliant: true
+    - ROADMAP.md Phase 1 marked Complete (2/2 plans)
   affects: [phase-02-github-api, phase-03-linux-shell, phase-04-macos-shell]
 
 tech-stack:
@@ -28,10 +29,17 @@ key-decisions:
   - "ASAN validation done via direct clang compile (not zig build) — allows -fsanitize=address,undefined flags without modifying build.zig"
   - "nm output shows 26 lines for 13 symbols: each exported fn appears as both internal Zig 't' symbol and exported 'T' C symbol — this is expected and correct per T-02-03"
   - "clang-22 available on system (Arch Linux) — no ASAN deferral needed"
+  - "Human approved all four ROADMAP Phase 1 success criteria after reviewing zig build test-c output, nm symbol table, and header ownership comments"
+
+key-files:
+  created: []
+  modified:
+    - .planning/phases/01-core-scaffolding-abi-contract/01-VALIDATION.md
+    - .planning/ROADMAP.md
 
 requirements-completed: [CORE-01, CORE-02, CORE-09]
 
-duration: 10min
+duration: 15min
 completed: 2026-04-16
 ---
 
@@ -44,8 +52,8 @@ completed: 2026-04-16
 - **Duration:** ~10 min
 - **Started:** 2026-04-16T13:45:00Z
 - **Completed:** 2026-04-16T13:49:39Z
-- **Tasks completed:** 1 of 3 (Task 2 is human-verify checkpoint; Task 3 runs after sign-off)
-- **Files modified:** 0 (validation-only task)
+- **Tasks completed:** 3 of 3
+- **Files modified:** 2 (VALIDATION.md, ROADMAP.md)
 
 ## Accomplishments
 
@@ -58,9 +66,9 @@ completed: 2026-04-16
 
 ## Task Commits
 
-Task 1 produced no file changes (verification-only). Commit covers this SUMMARY only.
-
-**Plan metadata:** (see final commit hash)
+1. **Task 1: Run ASAN-enabled C test and verify symbol table** — `c90ada5` (chore, verification-only, no file changes)
+2. **Task 2: Human sign-off on Phase 1 deliverables** — (checkpoint — no commit, human approved with "approved")
+3. **Task 3: Update VALIDATION.md and ROADMAP.md** — `4e98a2b` (chore)
 
 ## Verification Command Outputs (Task 1 record)
 
@@ -130,7 +138,8 @@ Guard present at line 27 of build.zig.
 
 ## Files Created/Modified
 
-None — Task 1 was verification-only.
+- `.planning/phases/01-core-scaffolding-abi-contract/01-VALIDATION.md` — nyquist_compliant: true, wave_0_complete: true, all task statuses green, all sign-off checkboxes checked, approval marked complete
+- `.planning/ROADMAP.md` — Phase 1 checkbox checked, progress table row updated to 2/2 / Complete / 2026-04-16, plan list checked off
 
 ## Decisions Made
 
@@ -156,15 +165,20 @@ None.
 ## Status
 
 **Task 1:** Complete — all acceptance criteria met.
-**Task 2:** PENDING HUMAN SIGN-OFF — see checkpoint below.
-**Task 3:** Blocked on Task 2 approval.
+**Task 2:** Complete — human approved ("approved").
+**Task 3:** Complete — VALIDATION.md and ROADMAP.md updated.
 
 ## Next Phase Readiness
 
-Phase 1 validation criteria are all met by automated checks. Human sign-off (Task 2) is the remaining gate before:
-- VALIDATION.md marked `nyquist_compliant: true`
-- ROADMAP.md Phase 1 marked Complete
-- Phase 2 planning can begin
+Phase 1 is fully complete. Phase 2 (Zig Core — Poll Engine + GitHub) can begin.
+- `libtowncrier.a` builds cleanly, ASAN-validated, 13 ABI symbols confirmed
+- `include/towncrier.h` locks the C ABI contract with full ownership documentation
+- VALIDATION.md: `nyquist_compliant: true`
+- ROADMAP.md: Phase 1 marked Complete (2/2 plans)
+
+Open research flags carried forward (documented in STATE.md):
+- Phase 2: Verify `std.Thread` sufficiency for per-account poll workers in Zig 0.16
+- Phase 3: Evaluate `libstray` v0.4.0 production readiness vs. hand-rolling D-Bus SNI
 
 ## Self-Check: PASSED
 
@@ -174,4 +188,4 @@ Phase 1 validation criteria are all met by automated checks. Human sign-off (Tas
 
 ---
 *Phase: 01-core-scaffolding-abi-contract*
-*Completed: 2026-04-16 (Task 1 only — awaiting Task 2 human sign-off)*
+*Completed: 2026-04-16*

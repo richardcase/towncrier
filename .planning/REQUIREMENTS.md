@@ -7,15 +7,15 @@
 
 ### Core Library
 
-- [ ] **CORE-01**: Zig core library builds as a static library with a stable C ABI header
-- [ ] **CORE-02**: C ABI exposes lifecycle functions (init, tick, free) and a snapshot pattern for safe cross-thread data access
+- [x] **CORE-01**: Zig core library builds as a static library with a stable C ABI header
+- [x] **CORE-02**: C ABI exposes lifecycle functions (init, tick, free) and a snapshot pattern for safe cross-thread data access
 - [ ] **CORE-03**: Poll engine runs on a background thread with configurable interval; respects GitHub's `X-Poll-Interval` header dynamically
 - [ ] **CORE-04**: Per-account polling model — each account has independent state, token, base URL, last-seen timestamps, and unread list
 - [ ] **CORE-05**: Unified notification data model (common struct across GitHub and GitLab notifications)
 - [ ] **CORE-06**: Notifications grouped by repository (client-side, in core)
 - [ ] **CORE-07**: Read/unread state persisted locally via SQLite (WAL mode for concurrent read/write)
 - [ ] **CORE-08**: Token storage via system keychain (macOS Security.framework via Swift shell; Linux Secret Service via libsecret)
-- [ ] **CORE-09**: build.zig supports multi-platform compilation; GTK/Linux-specific dependencies are OS-gated (macOS build never references GTK)
+- [x] **CORE-09**: build.zig supports multi-platform compilation; GTK/Linux-specific dependencies are OS-gated (macOS build never references GTK)
 
 ### GitHub Integration
 
@@ -88,9 +88,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | Phase 1 | Pending |
-| CORE-02 | Phase 1 | Pending |
-| CORE-09 | Phase 1 | Pending |
+| CORE-01 | Phase 1 | Complete |
+| CORE-02 | Phase 1 | Complete |
+| CORE-09 | Phase 1 | Complete |
 | CORE-03 | Phase 2 | Pending |
 | CORE-04 | Phase 2 | Pending |
 | CORE-05 | Phase 2 | Pending |
