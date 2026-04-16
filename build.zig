@@ -18,6 +18,8 @@ pub fn build(b: *std.Build) void {
         .linkage = .static,
     });
 
+    lib_mod.link_libc = true; // required for std.heap.c_allocator
+
     b.installArtifact(lib);
     lib.installHeader(b.path("include/towncrier.h"), "towncrier.h");
 
