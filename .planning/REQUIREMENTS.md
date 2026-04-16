@@ -88,43 +88,43 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | — | Pending |
-| CORE-02 | — | Pending |
-| CORE-03 | — | Pending |
-| CORE-04 | — | Pending |
-| CORE-05 | — | Pending |
-| CORE-06 | — | Pending |
-| CORE-07 | — | Pending |
-| CORE-08 | — | Pending |
-| CORE-09 | — | Pending |
-| GH-01 | — | Pending |
-| GH-02 | — | Pending |
-| GH-03 | — | Pending |
-| GH-04 | — | Pending |
-| GH-05 | — | Pending |
-| GL-01 | — | Pending |
-| GL-02 | — | Pending |
-| GL-03 | — | Pending |
-| GL-04 | — | Pending |
-| GL-05 | — | Pending |
-| MAC-01 | — | Pending |
-| MAC-02 | — | Pending |
-| MAC-03 | — | Pending |
-| MAC-04 | — | Pending |
-| MAC-05 | — | Pending |
-| MAC-06 | — | Pending |
-| LINUX-01 | — | Pending |
-| LINUX-02 | — | Pending |
-| LINUX-03 | — | Pending |
-| LINUX-04 | — | Pending |
-| LINUX-05 | — | Pending |
-| LINUX-06 | — | Pending |
+| CORE-01 | Phase 1 | Pending |
+| CORE-02 | Phase 1 | Pending |
+| CORE-09 | Phase 1 | Pending |
+| CORE-03 | Phase 2 | Pending |
+| CORE-04 | Phase 2 | Pending |
+| CORE-05 | Phase 2 | Pending |
+| CORE-06 | Phase 2 | Pending |
+| CORE-07 | Phase 2 | Pending |
+| CORE-08 | Phase 2 | Pending |
+| GH-01 | Phase 2 | Pending |
+| GH-02 | Phase 2 | Pending |
+| GH-03 | Phase 2 | Pending |
+| GH-04 | Phase 2 | Pending |
+| GH-05 | Phase 2 | Pending |
+| LINUX-01 | Phase 3 | Pending |
+| LINUX-02 | Phase 3 | Pending |
+| LINUX-03 | Phase 3 | Pending |
+| LINUX-04 | Phase 3 | Pending |
+| LINUX-05 | Phase 3 | Pending |
+| LINUX-06 | Phase 3 | Pending |
+| MAC-01 | Phase 4 | Pending |
+| MAC-02 | Phase 4 | Pending |
+| MAC-03 | Phase 4 | Pending |
+| MAC-04 | Phase 4 | Pending |
+| MAC-05 | Phase 4 | Pending |
+| MAC-06 | Phase 4 | Pending |
+| GL-01 | Phase 5 | Pending |
+| GL-02 | Phase 5 | Pending |
+| GL-03 | Phase 5 | Pending |
+| GL-04 | Phase 5 | Pending |
+| GL-05 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 31 total
-- Mapped to phases: 0 (roadmap not yet created)
-- Unmapped: 31 ⚠️
+- Mapped to phases: 31 (Phases 1-5; Phase 6 is cross-cutting verification)
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-16*
-*Last updated: 2026-04-16 after initial definition*
+*Last updated: 2026-04-16 after roadmap creation*
