@@ -1,0 +1,46 @@
+const std = @import("std");
+
+pub fn build(b: *std.Build) void {
+    const target = b.standardTargetOptions(.{});
+    const optimize = b.standardOptimizeOption(.{});
+
+    // ── Static library ─────────────────────────────────────────────────────────
+    const lib_mod = b.createModule(.{
+        .root_source_file = b.path("src/root.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const lib = b.addLibrary(.{
+        .name = "towncrier",
+        .root_module = lib_mod,
+        .version = .{ .major = 0, .minor = 1, .patch = 0 },
+        .linkage = .static,
+    });
+
+    b.installArtifact(lib);
+    lib.installHeader(b.path("include/towncrier.h"), "towncrier.h");
+
+    // ── Linux platform guard ───────────────────────────────────────────────────
+    if (target.result.os.tag == .linux) {
+        // Phase 3: link libstray, gtk-4, libsecret here
+    }
+
+    // ── C ABI integration test (test-c step) ───────────────────────────────────
+    const c_test_mod = b.createModule(.{
+        .target = target,
+        .optimize = optimize,
+    });
+    c_test_mod.addCSourceFile(.{ .file = b.path("tests/c_abi_test.c"), .flags = &.{"-std=c11"} });
+    c_test_mod.addIncludePath(b.path("include"));
+    c_test_mod.linkLibrary(lib);
+
+    const c_test = b.addExecutable(.{
+        .name = "c_abi_test",
+        .root_module = c_test_mod,
+    });
+
+    const run_c_test = b.addRunArtifact(c_test);
+    const test_c_step = b.step("test-c", "Run C ABI integration test");
+    test_c_step.dependOn(&run_c_test.step);
+}
