@@ -21,15 +21,20 @@ Phase 1 delivers a working Zig build system and the complete C ABI contract. The
 - **D-03:** Use **build.zig target detection** (`target.result.os.tag == .linux`) to conditionally add GTK/libstray dependencies. Platform isolation is a build concern, not a source concern — Zig library code should not contain `@import("builtin")` OS checks for build-time dependency selection. macOS builds never reference GTK symbols.
 
 ### C Test Binary
-- **D-04:** The Phase 1 validation test is a **C source file** (e.g. `tests/c_abi_test.c`) compiled via a `b.addExecutable` step in `build.zig` and linked against `libtowncrier.a`. Invoked with `zig build test-c`. This proves the C linkage path that the Swift shell will actually use — not a Zig `@cImport` test.
+- **D-04:** The Phase 1 validation test is a **C source file** (`tests/c_abi_test.c`) compiled via a `b.addExecutable` step in `build.zig` and linked against `libtowncrier.a`. Invoked with `zig build test-c`. This proves the C linkage path that the Swift shell will actually use — not a Zig `@cImport` test.
 
 ### Header Ownership Documentation
 - **D-05:** `towncrier.h` uses **rich inline C comments** to document: who allocates each string, who frees it, null-termination guarantees, callback thread-safety rules, and handle lifecycle. No SAL annotations, no companion doc — ownership documentation lives directly in the header, same pattern as Ghostty's `ghostty.h`.
 
+### Source File Layout
+- **D-06:** Follow the file layout prescribed in `.planning/research/ARCHITECTURE.md`: `src/c_api.zig` (C ABI surface implementation), `include/towncrier.h` (the C header), `tests/c_abi_test.c` (C test binary source). This naming is established by the research and should not drift.
+
+### Allocator for Opaque Handle
+- **D-07:** The opaque handle allocated in `towncrier_init` uses `std.heap.c_allocator`. This is the correct choice for a C-ABI library — the caller is a non-Zig process (Swift or C), so an arena tied to Zig's lifetime would be confusing. `c_allocator` delegates to the system malloc, which the C caller can reason about.
+
 ### Claude's Discretion
-- Internal Zig module layout (`src/` structure, file naming) — Claude decides based on Zig conventions
-- Whether stubs use `std.heap.c_allocator` or a simple arena for the opaque handle — Claude decides
-- Exact `build.zig` step naming and structure — Claude decides
+- Internal Zig module layout beyond `src/c_api.zig` (e.g., stub helpers, internal types for Phase 1) — Claude decides based on Zig conventions
+- Exact `build.zig` step naming for any additional steps beyond `test-c` — Claude decides
 
 </decisions>
 

@@ -5,7 +5,7 @@
 
 **Date:** 2026-04-16
 **Phase:** 01-core-scaffolding-abi-contract
-**Areas discussed:** ABI surface completeness, Multi-platform build gating, Test binary approach, Header ownership docs
+**Areas discussed:** ABI surface completeness, Multi-platform build gating, Test binary approach, Header ownership docs, Src file layout, Allocator for opaque handle
 
 ---
 
@@ -61,12 +61,36 @@
 
 ---
 
+## Src File Layout
+
+| Option | Description | Selected |
+|--------|-------------|----------|
+| Follow ARCHITECTURE.md prescriptions | `src/c_api.zig`, `include/towncrier.h`, `tests/c_abi_test.c` as prescribed in research | ✓ |
+| Claude's discretion | Let planner decide file names without constraint | |
+
+**User's choice:** [auto] Follow ARCHITECTURE.md prescriptions
+**Notes:** ARCHITECTURE.md already established these names during research — locking them down avoids drift between research artifacts and implementation.
+
+---
+
+## Allocator for Opaque Handle
+
+| Option | Description | Selected |
+|--------|-------------|----------|
+| `std.heap.c_allocator` | Delegates to system malloc; correct for C-ABI libraries with non-Zig callers | ✓ |
+| Arena allocator | Faster allocation; but lifetime management across FFI boundary is confusing | |
+| `std.heap.GeneralPurposeAllocator` | Full debug features; too heavy for production ABI boundary | |
+
+**User's choice:** [auto] `std.heap.c_allocator`
+**Notes:** Correct choice for a C-ABI library — Swift and C callers reason in terms of system malloc, not Zig allocator lifetimes.
+
+---
+
 ## Claude's Discretion
 
-- Internal Zig module layout (`src/` structure, file naming)
-- Whether stubs use `std.heap.c_allocator` or a simple arena for the opaque handle
-- Exact `build.zig` step naming and structure
+- Internal Zig module layout beyond `src/c_api.zig` (stub helpers, internal types for Phase 1)
+- `build.zig` step naming for any additional steps beyond `test-c`
 
 ## Deferred Ideas
 
-None raised during discussion.
+None — discussion stayed within phase scope.
