@@ -12,7 +12,7 @@ const std = @import("std");
 const types = @import("types.zig");
 
 /// Mirror of towncrier_runtime_s from towncrier.h. extern struct enforces C layout.
-const RuntimeCallbacks = extern struct {
+pub const RuntimeCallbacks = extern struct {
     userdata: ?*anyopaque,
     on_update: ?*const fn (?*anyopaque, u32) callconv(.c) void,
     wakeup: ?*const fn (?*anyopaque) callconv(.c) void,
