@@ -47,7 +47,7 @@ Plans:
   5. Token storage delegates to the platform shell via the ABI callback; no token is written to disk in plaintext
 **Plans**: 5 plans
 Plans:
-- [ ] 02-01-PLAN.md — Data model (types.zig), SQLite store, zig-sqlite dependency
+- [x] 02-01-PLAN.md — Data model (types.zig), SQLite store, zig-sqlite dependency
 - [ ] 02-02-PLAN.md — HTTP wrapper (http.zig), GitHub API client (github.zig)
 - [ ] 02-03-PLAN.md — Poll engine thread loop (poller.zig)
 - [ ] 02-04-PLAN.md — C ABI wiring — replace all stubs with real implementations
