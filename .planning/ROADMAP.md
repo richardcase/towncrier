@@ -50,7 +50,7 @@ Plans:
 - [x] 02-01-PLAN.md — Data model (types.zig), SQLite store, zig-sqlite dependency
 - [x] 02-02-PLAN.md — HTTP wrapper (http.zig), GitHub API client (github.zig)
 - [x] 02-03-PLAN.md — Poll engine thread loop (poller.zig)
-- [ ] 02-04-PLAN.md — C ABI wiring — replace all stubs with real implementations
+- [x] 02-04-PLAN.md — C ABI wiring — replace all stubs with real implementations
 - [ ] 02-05-PLAN.md — Test harness: mock server + integration assertions for all 11 requirements
 **UI hint**: no
 
