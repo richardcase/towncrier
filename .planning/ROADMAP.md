@@ -45,7 +45,13 @@ Plans:
   3. Marking a notification as read issues `PATCH /notifications/threads/:id`; subsequent snapshot no longer includes that notification
   4. Read/unread state survives process restart (verified by stopping and restarting the test harness with pre-populated SQLite DB)
   5. Token storage delegates to the platform shell via the ABI callback; no token is written to disk in plaintext
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 02-01-PLAN.md — Data model (types.zig), SQLite store, zig-sqlite dependency
+- [ ] 02-02-PLAN.md — HTTP wrapper (http.zig), GitHub API client (github.zig)
+- [ ] 02-03-PLAN.md — Poll engine thread loop (poller.zig)
+- [ ] 02-04-PLAN.md — C ABI wiring — replace all stubs with real implementations
+- [ ] 02-05-PLAN.md — Test harness: mock server + integration assertions for all 11 requirements
 **UI hint**: no
 
 ### Phase 3: Linux Tray App
@@ -105,7 +111,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Scaffolding + ABI Contract | 2/2 | Complete   | 2026-04-16 |
-| 2. Zig Core — Poll Engine + GitHub | 0/TBD | Not started | - |
+| 2. Zig Core — Poll Engine + GitHub | 0/5 | Not started | - |
 | 3. Linux Tray App | 0/TBD | Not started | - |
 | 4. macOS Tray App | 0/TBD | Not started | - |
 | 5. GitLab Integration | 0/TBD | Not started | - |
