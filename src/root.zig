@@ -5,6 +5,7 @@
 //! into the static library. Without this, Zig's lazy compilation would skip the module.
 
 pub const c_api = @import("c_api.zig");
+pub const store = @import("store.zig");
 
 comptime {
     _ = c_api;
