@@ -63,4 +63,22 @@ pub fn build(b: *std.Build) void {
     const run_c_test = b.addRunArtifact(c_test);
     const test_c_step = b.step("test-c", "Run C ABI integration test");
     test_c_step.dependOn(&run_c_test.step);
+
+    // ── Zig unit tests (test-unit step) ────────────────────────────────────────
+    // Runs all test blocks in src/http.zig and src/github.zig.
+    const unit_test_mod = b.createModule(.{
+        .root_source_file = b.path("src/root.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    unit_test_mod.link_libc = true;
+    unit_test_mod.addImport("sqlite", sqlite_mod);
+
+    const unit_tests = b.addTest(.{
+        .root_module = unit_test_mod,
+    });
+
+    const run_unit_tests = b.addRunArtifact(unit_tests);
+    const test_unit_step = b.step("test-unit", "Run Zig unit tests (http, github, types)");
+    test_unit_step.dependOn(&run_unit_tests.step);
 }

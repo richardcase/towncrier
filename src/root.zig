@@ -6,7 +6,17 @@
 
 pub const c_api = @import("c_api.zig");
 pub const store = @import("store.zig");
+pub const http = @import("http.zig");
+pub const github = @import("github.zig");
 
 comptime {
     _ = c_api;
+}
+
+// Pull all tests from sub-modules into the root test namespace.
+test {
+    _ = @import("types.zig");
+    _ = @import("store.zig");
+    _ = @import("http.zig");
+    _ = @import("github.zig");
 }
