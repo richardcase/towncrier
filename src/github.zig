@@ -247,7 +247,8 @@ fn parseIso8601(s: []const u8) i64 {
     const y: i64 = if (month <= 2) year - 1 else year;
     const m: i64 = if (month <= 2) month + 9 else month - 3;
     const d: i64 = day;
-    const jdn: i64 = (146097 * (y + 4800) / 400) + (153 * m + 2) / 5 + d - 32045;
+    // Zig 0.16: signed integer division requires @divTrunc/@divFloor/@divExact.
+    const jdn: i64 = @divTrunc(146097 * (y + 4800), 400) + @divTrunc(153 * m + 2, 5) + d - 32045;
     const unix_day: i64 = jdn - 2440588; // JDN for 1970-01-01
     return unix_day * 86400 + @as(i64, hour) * 3600 + @as(i64, min) * 60 + @as(i64, sec);
 }

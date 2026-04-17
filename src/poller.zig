@@ -260,11 +260,14 @@ fn doPoll(ctx: *PollContext) !void {
             }
             ctx.account_state.account.last_modified = new_lm;
 
+            // Zig 0.16: std.time.timestamp() removed; use std.c.clock_gettime.
+            var ts: std.c.timespec = undefined;
+            _ = std.c.clock_gettime(std.c.CLOCK.REALTIME, &ts);
             store.savePollState(
                 db,
                 ctx.account_state.account.id,
                 new_lm,
-                std.time.timestamp(),
+                ts.sec,
             ) catch |err| {
                 std.log.err("poller: savePollState failed: {}", .{err});
             };

@@ -61,7 +61,7 @@ pub const HttpClient = struct {
 
         // Buffer for redirect URI rewriting (8 KB as recommended by RFC 9110).
         var redirect_buf: [8192]u8 = undefined;
-        const response = try req.receiveHead(&redirect_buf);
+        var response = try req.receiveHead(&redirect_buf);
 
         // Extract Last-Modified and X-Poll-Interval from raw header bytes.
         var last_modified: ?[]const u8 = null;

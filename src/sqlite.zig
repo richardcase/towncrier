@@ -155,18 +155,19 @@ pub const Db = struct {
 
         try bindArgs(stmt.?, args);
 
-        var results = std.ArrayList(T).init(allocator);
-        errdefer results.deinit();
+        // Zig 0.16: std.ArrayList is unmanaged — pass allocator to all operations.
+        var results: std.ArrayList(T) = .empty;
+        errdefer results.deinit(allocator);
 
         while (true) {
             const step_rc = c.sqlite3_step(stmt.?);
             if (step_rc == c.SQLITE_DONE) break;
             if (step_rc != c.SQLITE_ROW) return Error.SqliteError;
             const row = try readRow(T, stmt.?, allocator);
-            try results.append(row);
+            try results.append(allocator, row);
         }
 
-        return results.toOwnedSlice();
+        return results.toOwnedSlice(allocator);
     }
 };
 
