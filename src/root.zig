@@ -8,6 +8,7 @@ pub const c_api = @import("c_api.zig");
 pub const store = @import("store.zig");
 pub const http = @import("http.zig");
 pub const github = @import("github.zig");
+pub const poller = @import("poller.zig");
 
 comptime {
     _ = c_api;
