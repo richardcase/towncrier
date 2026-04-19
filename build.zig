@@ -64,6 +64,27 @@ pub fn build(b: *std.Build) void {
     const test_c_step = b.step("test-c", "Run C ABI integration test");
     test_c_step.dependOn(&run_c_test.step);
 
+    // ── Poll engine integration test (test-poll step) ─────────────────────────
+    const poll_test_mod = b.createModule(.{
+        .root_source_file = b.path("tests/core/poll_test.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    poll_test_mod.addImport("sqlite", sqlite_mod);
+    poll_test_mod.link_libc = true;
+    poll_test_mod.addIncludePath(b.path("include"));
+
+    poll_test_mod.linkLibrary(lib);
+
+    const poll_test = b.addExecutable(.{
+        .name = "poll_test",
+        .root_module = poll_test_mod,
+    });
+
+    const run_poll_test = b.addRunArtifact(poll_test);
+    const test_poll_step = b.step("test-poll", "Run poll engine integration test");
+    test_poll_step.dependOn(&run_poll_test.step);
+
     // ── Zig unit tests (test-unit step) ────────────────────────────────────────
     // Runs all test blocks in src/http.zig and src/github.zig.
     const unit_test_mod = b.createModule(.{
