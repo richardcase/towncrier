@@ -110,7 +110,10 @@ pub const HttpClient = struct {
         });
         defer req.deinit();
 
-        try req.sendBodiless();
+        // Zig 0.16: PATCH requestHasBody() == true, so sendBodiless() panics.
+        // Use sendBodyComplete with empty body (GitHub mark-read PATCH has no body).
+        var empty_body: [0]u8 = .{};
+        try req.sendBodyComplete(&empty_body);
 
         var redirect_buf: [8192]u8 = undefined;
         const response = try req.receiveHead(&redirect_buf);

@@ -16,7 +16,9 @@ pub fn build(b: *std.Build) void {
     sqlite_mod.addIncludePath(b.path("vendor/sqlite"));
     sqlite_mod.addCSourceFile(.{
         .file = b.path("vendor/sqlite/sqlite3.c"),
-        .flags = &.{ "-std=c99", "-DSQLITE_THREADSAFE=2" },
+        // SQLITE_THREADSAFE=1: Serialized mode — required because multiple poll threads
+        // share a single sqlite.Db connection (one per TowncrierHandle).
+        .flags = &.{ "-std=c99", "-DSQLITE_THREADSAFE=1" },
     });
 
     // ── Static library ─────────────────────────────────────────────────────────

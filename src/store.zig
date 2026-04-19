@@ -38,11 +38,15 @@ const schema_v1 =
 // ── Lifecycle ──────────────────────────────────────────────────────────────
 
 /// Open the SQLite database at `db_path`, set WAL mode, and apply migrations.
+/// Uses Serialized threading mode because multiple poll threads share this connection.
+/// SQLITE_OPEN_NOMUTEX (MultiThread) would allow concurrent access to the same
+/// connection, corrupting the lookaside allocator. Serialized mode adds a mutex
+/// per connection, which is safe for the single-connection shared model here.
 pub fn open(db_path: []const u8) !sqlite.Db {
     var db = try sqlite.Db.init(.{
         .mode = sqlite.DbMode{ .File = db_path },
         .open_flags = .{ .write = true, .create = true },
-        .threading_mode = .MultiThread,
+        .threading_mode = .Serialized,
     });
     try db.exec("PRAGMA journal_mode=WAL", .{}, .{});
     try db.exec("PRAGMA synchronous=NORMAL", .{}, .{});

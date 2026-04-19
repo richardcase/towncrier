@@ -126,8 +126,14 @@ pub fn fetchNotifications(
     }
 
     for (parsed.value) |item| {
-        // Generate a stable u64 id from the string id.
-        const id = std.fmt.parseInt(u64, item.id, 10) catch std.hash.Wyhash.hash(0, item.id);
+        // Generate a stable u64 id unique per (account_id, api_id) pair.
+        // Combining account_id ensures two accounts polling the same notification
+        // (same api_id string) produce different u64 ids and don't collide on
+        // the notifications PRIMARY KEY column in the DB.
+        const api_id_num = std.fmt.parseInt(u64, item.id, 10) catch std.hash.Wyhash.hash(0, item.id);
+        // Mix account_id into the high bits. account_id is u32; shift left 32 bits
+        // and XOR with the numeric api_id to produce a unique composite key.
+        const id = api_id_num ^ (@as(u64, account.id) << 32);
 
         const updated_at = parseIso8601(item.updated_at);
 

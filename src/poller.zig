@@ -314,17 +314,24 @@ fn buildAndDeliverSnapshot(ctx: *PollContext) !void {
     const items = try handle.allocator.alloc(c_api.NotificationC, notifications.len);
     errdefer handle.allocator.free(items);
 
+    // Two-pass approach: first build string_buf (may reallocate), storing offsets.
+    // Then fix up pointers in a second pass once string_buf is finalized.
+    // This avoids dangling pointers when string_buf.items.ptr changes on realloc.
+    const Offsets = struct { repo: usize, title: usize, url: usize };
+    const offsets = try handle.allocator.alloc(Offsets, notifications.len);
+    defer handle.allocator.free(offsets);
+
     for (notifications, 0..) |notif, i| {
         // Append repo\x00, title\x00, url\x00 to string_buf; record byte offsets.
-        const repo_offset = string_buf.items.len;
+        offsets[i].repo = string_buf.items.len;
         try string_buf.appendSlice(handle.allocator, notif.repo);
         try string_buf.append(handle.allocator, 0); // null terminator
 
-        const title_offset = string_buf.items.len;
+        offsets[i].title = string_buf.items.len;
         try string_buf.appendSlice(handle.allocator, notif.title);
         try string_buf.append(handle.allocator, 0);
 
-        const url_offset = string_buf.items.len;
+        offsets[i].url = string_buf.items.len;
         try string_buf.appendSlice(handle.allocator, notif.url);
         try string_buf.append(handle.allocator, 0);
 
@@ -333,12 +340,20 @@ fn buildAndDeliverSnapshot(ctx: *PollContext) !void {
             .account_id = notif.account_id,
             .type = @intFromEnum(notif.notif_type),
             .state = if (notif.is_read) 1 else 0,
-            // Pointers into string_buf — valid for the lifetime of the snapshot.
-            .repo = @ptrCast(string_buf.items[repo_offset..].ptr),
-            .title = @ptrCast(string_buf.items[title_offset..].ptr),
-            .url = @ptrCast(string_buf.items[url_offset..].ptr),
+            // Pointers are fixed up after the loop once string_buf is finalized.
+            .repo = null,
+            .title = null,
+            .url = null,
             .updated_at = notif.updated_at,
         };
+    }
+
+    // Second pass: fix up string pointers now that string_buf won't reallocate.
+    // string_buf.items.ptr is stable for the lifetime of the snapshot.
+    for (items, 0..) |*item, i| {
+        item.repo = @ptrCast(string_buf.items[offsets[i].repo..].ptr);
+        item.title = @ptrCast(string_buf.items[offsets[i].title..].ptr);
+        item.url = @ptrCast(string_buf.items[offsets[i].url..].ptr);
     }
 
     // Allocate the snapshot struct itself.
