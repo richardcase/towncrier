@@ -745,4 +745,8 @@ pub fn main() !void {
 
     // ── All tests passed ─────────────────────────────────────────────────────
     std.debug.print("ALL TESTS PASSED\n", .{});
+    // std.Io.Threaded.global_single_threaded spawns background event-loop
+    // threads that have no public shutdown API — exit explicitly so the
+    // process terminates instead of hanging after all user threads join.
+    std.process.exit(0);
 }
