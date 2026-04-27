@@ -13,7 +13,7 @@ Towncrier is built in six phases that follow a strict dependency graph: scaffold
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Scaffolding + ABI Contract** - Build system, static library, and C ABI header proven on both platforms
-- [ ] **Phase 2: Zig Core — Poll Engine + GitHub** - Background polling, SQLite state, GitHub API client, and snapshot delivery
+- [x] **Phase 2: Zig Core — Poll Engine + GitHub** - Background polling, SQLite state, GitHub API client, and snapshot delivery
 - [ ] **Phase 3: Linux Tray App** - D-Bus tray, GTK4 notification list, libsecret, and xdg-open on Linux
 - [ ] **Phase 4: macOS Tray App** - NSStatusItem tray, XCFramework integration, Keychain, and browser launch on macOS
 - [ ] **Phase 5: GitLab Integration** - Todos API client, self-hosted base URL, mark-as-done, multi-account GitLab
@@ -111,7 +111,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Scaffolding + ABI Contract | 2/2 | Complete   | 2026-04-16 |
-| 2. Zig Core — Poll Engine + GitHub | 0/5 | Not started | - |
+| 2. Zig Core — Poll Engine + GitHub | 5/5 | Complete   | 2026-04-27 |
 | 3. Linux Tray App | 0/TBD | Not started | - |
 | 4. macOS Tray App | 0/TBD | Not started | - |
 | 5. GitLab Integration | 0/TBD | Not started | - |
