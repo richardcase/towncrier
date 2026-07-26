@@ -1,4 +1,3 @@
-<!-- GSD:project-start source:PROJECT.md -->
 ## Project
 
 **Towncrier**
@@ -15,9 +14,7 @@ Towncrier is a cross-platform tray application that aggregates GitHub and GitLab
 - **Compatibility**: Must run on macOS and Linux — no Windows requirement
 - **Security**: Tokens must be stored in system keychain, never in plaintext config files
 - **Architecture**: Platform shells consume core via C ABI — loose coupling, same pattern as Ghostty
-<!-- GSD:project-end -->
 
-<!-- GSD:stack-start source:research/STACK.md -->
 ## Technology Stack
 
 ## Recommended Stack
@@ -101,44 +98,42 @@ Towncrier is a cross-platform tray application that aggregates GitHub and GitLab
 - NSStatusItem Apple Developer Docs: https://developer.apple.com/documentation/appkit/nsstatusitem
 - Zig C ABI overview: https://zig.guide/working-with-c/abi/
 - std.json documentation: https://zig.guide/standard-library/json/
-<!-- GSD:stack-end -->
 
-<!-- GSD:conventions-start source:CONVENTIONS.md -->
 ## Conventions
 
 Conventions not yet established. Will populate as patterns emerge during development.
-<!-- GSD:conventions-end -->
 
-<!-- GSD:architecture-start source:ARCHITECTURE.md -->
 ## Architecture
 
 Architecture not yet mapped. Follow existing patterns found in the codebase.
-<!-- GSD:architecture-end -->
 
-<!-- GSD:skills-start source:skills/ -->
 ## Project Skills
 
 No project skills found. Add skills to any of: `.claude/skills/`, `.agents/skills/`, `.cursor/skills/`, or `.github/skills/` with a `SKILL.md` index file.
-<!-- GSD:skills-end -->
 
-<!-- GSD:workflow-start source:GSD defaults -->
-## GSD Workflow Enforcement
+## Spec-Driven Development Workflow
 
-Before using Edit, Write, or other file-changing tools, start work through a GSD command so planning artifacts and execution context stay in sync.
+This project uses [GitHub Spec Kit](https://github.com/github/spec-kit) for planning. Planning
+artifacts live in `.specify/` (constitution, templates, scripts) and `specs/` (one directory per
+feature/phase); project-level research is in `docs/research/`.
 
-Use these entry points:
-- `/gsd-quick` for small fixes, doc updates, and ad-hoc tasks
-- `/gsd-debug` for investigation and bug fixing
-- `/gsd-execute-phase` for planned phase work
+**The constitution is authoritative.** Read `.specify/memory/constitution.md` before proposing
+changes — its principles (Zig core + C-ABI boundary, thin shells, build-time platform isolation,
+keychain-only tokens, poll-don't-push) and scope boundaries govern all specs.
 
-Do not make direct repo edits outside a GSD workflow unless the user explicitly asks to bypass it.
-<!-- GSD:workflow-end -->
+Drive planned work through the Spec Kit commands (installed as `.claude/skills/speckit-*`):
 
+- `/speckit-constitution` — establish or amend project principles
+- `/speckit-specify` — create a feature specification
+- `/speckit-clarify` *(optional)* — de-risk ambiguous areas before planning
+- `/speckit-plan` — create the implementation plan
+- `/speckit-tasks` — generate the actionable task list
+- `/speckit-analyze` *(optional)* — cross-artifact consistency check
+- `/speckit-implement` — execute the tasks
 
-
-<!-- GSD:profile-start -->
-## Developer Profile
-
-> Profile not yet configured. Run `/gsd-profile-user` to generate your developer profile.
-> This section is managed by `generate-claude-profile` -- do not edit manually.
-<!-- GSD:profile-end -->
+**Roadmap:** phases map 1:1 to `specs/001-*` … `specs/006-*`. Phases 001 (Core Scaffolding + ABI
+Contract) and 002 (Zig Core — Poll Engine + GitHub) are **complete**; their full
+`spec.md`/`plan.md`/`research.md`/`tasks.md` are the record. Phases 003–006 have a `spec.md`;
+generate their `plan.md`/`tasks.md` via `/speckit-plan` + `/speckit-tasks` when each is started.
+Requirement IDs (`CORE-`/`GH-`/`GL-`/`MAC-`/`LINUX-`) are tagged inside each spec's Requirements
+section; post-v1 items live in `specs/000-backlog.md`.
