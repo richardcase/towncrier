@@ -7,6 +7,23 @@ const c = @cImport({
     @cInclude("sqlite3.h");
 });
 
+// SQLITE_TRANSIENT is the sentinel `(void(*)(void*))-1` that tells SQLite to copy
+// the bound value immediately. Zig 0.16's translate-c expands the macro to
+// `@ptrFromInt(-1)` for the destructor's function-pointer type, which fails the
+// comptime alignment check on targets where function pointers are >1-aligned
+// (e.g. aarch64). Construct the sentinel against an align(1) function-pointer type
+// (which accepts any address) and bind through a matching `extern` declaration —
+// the pointer is passed by value and never dereferenced, so this is ABI-safe.
+const SqliteDestructor = ?*align(1) const fn (?*anyopaque) callconv(.c) void;
+const SQLITE_TRANSIENT: SqliteDestructor = @ptrFromInt(@as(usize, @bitCast(@as(isize, -1))));
+extern fn sqlite3_bind_text(
+    stmt: ?*c.sqlite3_stmt,
+    idx: c_int,
+    text: [*c]const u8,
+    n: c_int,
+    destructor: SqliteDestructor,
+) callconv(.c) c_int;
+
 pub const Error = error{
     SqliteError,
     NoRow,
@@ -229,7 +246,7 @@ fn bindValue(stmt: *c.sqlite3_stmt, idx: c_int, val: anytype) !void {
         .pointer => |ptr| blk: {
             if (ptr.child == u8) {
                 const slice: []const u8 = val;
-                break :blk c.sqlite3_bind_text(stmt, idx, slice.ptr, @intCast(slice.len), c.SQLITE_TRANSIENT);
+                break :blk sqlite3_bind_text(stmt, idx, slice.ptr, @intCast(slice.len), SQLITE_TRANSIENT);
             } else {
                 @compileError("unsupported pointer type for SQLite bind: " ++ @typeName(T));
             }
